@@ -1,17 +1,30 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import React, { useState } from "react";
+import Scanner from "./components/Scanner";
+import ReactDOM from "react-dom";
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+import "./index.css";
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+function App() {
+  const [camera, setCamera] = useState(false);
+  const [result, setResult] = useState(null);
+
+  const onDetected = result => {
+    setResult(result);
+  };
+
+  return (
+    <div className="App">
+      <p>{result ? result : "Scanning..."}</p>
+      <button onClick={() => setCamera(!camera)}>
+        {camera ? "Stop" : "Start"}
+      </button>
+      <div className="container">
+        {camera && <Scanner onDetected={onDetected} />}
+      </div>
+    </div>
+  );
+}
+
+const rootElement = document.getElementById("root");
+
+ReactDOM.render(<App />, rootElement);
